@@ -229,7 +229,7 @@ onMounted(() => {
     bearing: -17.6,
   });
 
-  mapInstance.value.addControl(new mapboxgl.NavigationControl(), 'top-right');
+  mapInstance.value.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
   mapInstance.value.on('load', () => {
     loadPoisForCurrentView();
@@ -277,3 +277,4 @@ onUnmounted(() => {
   border-radius: 50%;
 }
 </style>
+

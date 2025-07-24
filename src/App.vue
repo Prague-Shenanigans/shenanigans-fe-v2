@@ -1,10 +1,13 @@
 <template>
-  <MainMap/>
+  <MainLayout>
+    <MainComponent/>
+  </MainLayout>
   <!-- <router-view /> -->
 </template>
 
 <script setup>
 
-import MainMap from 'src/vue/components/MainMap.vue';
+import MainLayout from 'layouts/MainLayout.vue';
+import MainComponent from 'src/vue/components/MainComponent.vue';
 //
 </script>

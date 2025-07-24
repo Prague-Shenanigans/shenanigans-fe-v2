@@ -151,6 +151,10 @@ defineExpose({
 });
 </script>
 
+export default {
+  name: 'PoisPanel'
+};
+
 <style lang="scss" scoped>
 .poi-header {
   display: flex;

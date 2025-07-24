@@ -1,1 +1,13 @@
 // app global css in SCSS form
+
+.mapboxgl-ctrl-bottom-right {
+  margin: 0 20px 70px 0 !important;
+}
+
+.mapboxgl-ctrl-attrib {
+  display: none !important;
+}
+
+.mapboxgl-ctrl-bottom-left {
+ display: none !important;
+}
