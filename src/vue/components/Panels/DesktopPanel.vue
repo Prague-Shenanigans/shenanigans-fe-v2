@@ -49,7 +49,7 @@ defineExpose({
   height: 100vh;
   background: #fff7e2;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 9900;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -93,7 +93,7 @@ defineExpose({
   color: #888;
   cursor: pointer;
   transition: color 0.2s;
-  z-index: 1100; /* higher than panel content */
+  z-index: 9990; /* higher than panel content */
 }
 .close-btn:hover {
   color: #333;
