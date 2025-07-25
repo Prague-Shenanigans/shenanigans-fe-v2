@@ -1,7 +1,7 @@
 <template>
   <transition name="slide-panel">
     <div v-if="visible" ref="panelRef" class="desktop-panel">
-      <button class="close-btn" @click="togglePanel">&times;</button>
+      <button class="close-btn" @click="closeDesktopPanel">&times;</button>
       <div class="panel-content">
         <div class="panel-primary">
           <slot>
@@ -20,10 +20,6 @@ import { useClickOutsidePanel } from 'src/utils/useClickOutsidePanel';
 const emit = defineEmits(['closeDesktopPanel']);
 const visible = ref(false);
 const panelRef = ref(null);
-
-function togglePanel() {
-  visible.value = !visible.value;
-}
 
 function openDesktopPanel() {
   visible.value = true;
@@ -114,5 +110,24 @@ defineExpose({
   -webkit-overflow-scrolling: touch;
   width: 100%;
   height: 100%;
+  /* Custom scrollbar styles */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(0,0,0,0.15) rgba(0,0,0,0.03); /* Firefox */
+}
+.panel-primary::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+}
+.panel-primary::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.panel-primary:hover::-webkit-scrollbar-thumb,
+.panel-primary:active::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.25);
+}
+.panel-primary::-webkit-scrollbar-track {
+  background: transparent;
 }
 </style> 

@@ -2,16 +2,24 @@
   <DesktopPanel ref="desktopPanelRef" v-if="isDesktop" @closeDesktopPanel="$emit('closeDesktopPanel')">
     <template #default>
       <div v-if="props.selectedPoi">
-        <h2>{{ props.selectedPoi.title }}</h2>
-        <img v-if="props.selectedPoi.header_image_url" :src="props.selectedPoi.header_image_url" :alt="props.selectedPoi.title" style="max-width: 100%; max-height: 200px; object-fit: cover; margin-bottom: 1rem;" />
+        <h2 class="poi-title">{{ props.selectedPoi.title }}</h2>
+        <img
+          v-if="props.selectedPoi.header_image_url"
+          :src="props.selectedPoi.header_image_url"
+          :alt="props.selectedPoi.title"
+          class="poi-header-image"
+        />
         <p>{{ props.selectedPoi.description }}</p>
       </div>
       <div class="category-menu">
+        <div v-if="availableCategories.length > 0" class="category-menu-label">
+          {{ availableCategories.length === 1 ? 'Category:' : 'How would you like to experience this place?' }}
+        </div>
         <button
           v-for="cat in availableCategories"
           :key="cat.key"
           :style="{ background: cat.color, color: '#fff', marginRight: '8px' }"
-          :class="{ active: selectedCategory === cat.key }"
+          :class="{ active: selectedCategory === cat.key, 'category-tag': true }"
           @click="selectedCategory = cat.key"
         >
           {{ cat.label }}
@@ -19,16 +27,19 @@
       </div>
       <div v-if="selectedCategory">
         <div v-if="getCategoryItems(selectedCategory).length > 1">
+          <div class="element-tags-label">Choose one</div>
           <div v-if="selectedCategory === 'events'">
-            <button
-              v-for="(item, idx) in getCategoryItems('events')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('events')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <EventCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :event="getCategoryItems('events')[selectedCategoryElementIndex]"
@@ -36,15 +47,17 @@
             />
           </div>
           <div v-else-if="selectedCategory === 'restaurants'">
-            <button
-              v-for="(item, idx) in getCategoryItems('restaurants')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('restaurants')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <RestaurantCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :restaurant="getCategoryItems('restaurants')[selectedCategoryElementIndex]"
@@ -52,15 +65,17 @@
             />
           </div>
           <div v-else-if="selectedCategory === 'pubs'">
-            <button
-              v-for="(item, idx) in getCategoryItems('pubs')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('pubs')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <PubCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :pub="getCategoryItems('pubs')[selectedCategoryElementIndex]"
@@ -68,15 +83,17 @@
             />
           </div>
           <div v-else-if="selectedCategory === 'bars'">
-            <button
-              v-for="(item, idx) in getCategoryItems('bars')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('bars')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <BarCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :bar="getCategoryItems('bars')[selectedCategoryElementIndex]"
@@ -84,15 +101,17 @@
             />
           </div>
           <div v-else-if="selectedCategory === 'landmarks'">
-            <button
-              v-for="(item, idx) in getCategoryItems('landmarks')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('landmarks')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <LandmarkCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :landmark="getCategoryItems('landmarks')[selectedCategoryElementIndex]"
@@ -100,15 +119,17 @@
             />
           </div>
           <div v-else-if="selectedCategory === 'views'">
-            <button
-              v-for="(item, idx) in getCategoryItems('views')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('views')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <ViewCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :view="getCategoryItems('views')[selectedCategoryElementIndex]"
@@ -116,15 +137,17 @@
             />
           </div>
           <div v-else-if="selectedCategory === 'legends_myths'">
-            <button
-              v-for="(item, idx) in getCategoryItems('legends_myths')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('legends_myths')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <LegendMythCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :legend="getCategoryItems('legends_myths')[selectedCategoryElementIndex]"
@@ -132,15 +155,17 @@
             />
           </div>
           <div v-else-if="selectedCategory === 'underground'">
-            <button
-              v-for="(item, idx) in getCategoryItems('underground')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('underground')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <UndergroundCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :underground="getCategoryItems('underground')[selectedCategoryElementIndex]"
@@ -148,15 +173,17 @@
             />
           </div>
           <div v-else-if="selectedCategory === 'scammers'">
-            <button
-              v-for="(item, idx) in getCategoryItems('scammers')"
-              :key="item.id"
-              class="category-item-btn"
-              :class="{ active: selectedCategoryElementIndex === idx }"
-              @click="selectedCategoryElementIndex = idx"
-            >
-              {{ item.name || item.title }}
-            </button>
+            <div class="category-elements">
+              <button
+                v-for="(item, idx) in getCategoryItems('scammers')"
+                :key="item.id"
+                class="category-element-tag"
+                :class="{ selected: selectedCategoryElementIndex === idx }"
+                @click="selectedCategoryElementIndex = idx"
+              >
+                {{ item.name || item.title }}
+              </button>
+            </div>
             <ScammerCategoryCard
               v-if="selectedCategoryElementIndex !== null"
               :scammer="getCategoryItems('scammers')[selectedCategoryElementIndex]"
@@ -286,21 +313,74 @@ function getCategoryItems(key) {
 </script>
 
 <style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
 .category-menu {
   margin-bottom: 1.5rem;
-  button {
+  .category-menu-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #7b2d26;
+  }
+  .category-tag {
     border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1.2rem;
+    border-radius: 16px;
+    padding: 0.4rem 1.1rem;
     font-weight: 600;
     font-size: 1rem;
     margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
     cursor: pointer;
     opacity: 0.85;
+    background: #e2a03f;
+    color: #fff;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     &.active {
       border: 2px solid #fff7e2;
       opacity: 1;
+      background: #7b2d26;
+      color: #fff7e2;
     }
+  }
+}
+.element-tags-label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #4e6578;
+}
+.category-elements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.category-element-tag {
+  display: inline-block;
+  border: none;
+  border-radius: 16px;
+  padding: 0.3rem 1rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  margin-bottom: 0.7rem;
+  margin-right: 0.5rem;
+  background: #f3e7d3;
+  color: #7b2d26;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  opacity: 0.92;
+  &:hover {
+    background: #e2a03f;
+    color: #fff;
+  }
+  &.selected {
+    background: #7b2d26;
+    color: #fff7e2;
+    opacity: 1;
+    border: 2px solid #fff7e2;
   }
 }
 .empty-category {
@@ -308,5 +388,27 @@ function getCategoryItems(key) {
   font-style: italic;
   margin-top: 1rem;
 }
+.poi-header-image {
+  width: 100%;
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 18px;
+  margin-bottom: 1.2rem;
+  display: block;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.pois-panel, .category-menu, .element-tags-label, .category-element-tag, .poi-title, .poi-header-image, .empty-category, .category-menu-label {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+}
+
+.poi-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #7b2d26;
+  line-height: 1.2;
+}
 </style>
+
 
