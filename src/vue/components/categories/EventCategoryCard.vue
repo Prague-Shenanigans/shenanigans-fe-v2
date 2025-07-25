@@ -2,11 +2,11 @@
   <div class="event-card">
     <div class="event-header">
       <div class="event-title-row">
-        <span class="event-type-tag">{{ event.event_type }}</span>
         <h3 class="event-title">{{ event.name }}</h3>
+        <span class="event-type-tag">{{ event.event_type }}</span>
       </div>
-      <div class="event-venue">{{ event.venue }}</div>
-      <div class="event-dates">
+      <div class="event-venue dark-data"><span class="event-detail-label">Venue:</span> {{ event.venue }}</div>
+      <div class="event-dates dark-data">
         <span>{{ formatDate(event.start_date) }}</span>
         <span v-if="event.end_date"> - {{ formatDate(event.end_date) }}</span>
       </div>
@@ -78,12 +78,13 @@ function formatDate(dateStr) {
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 .event-card {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  background: #fff7e2;
+  background: $color-soft-sand;
+  border-left: 6px solid #d85a28;
   border-radius: 18px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   padding: 1.2rem 1.5rem 1.2rem 1.5rem;
   margin-bottom: 1.2rem;
-  color: #4e6578;
+  color: #252729;
   max-width: 600px;
 }
 .event-header {
@@ -95,29 +96,30 @@ function formatDate(dateStr) {
   gap: 0.7rem;
 }
 .event-type-tag {
-  background: #e2a03f;
-  color: #fff;
+  background: #d85a28;
+  color: #fff7e2;
   font-size: 0.95rem;
   font-weight: 600;
   border-radius: 12px;
   padding: 0.2rem 0.8rem;
   margin-right: 0.5rem;
   letter-spacing: 0.02em;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 .event-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #7b2d26;
+  color: #d85a28;
   margin: 0;
 }
 .event-venue {
   font-size: 1.05rem;
-  color: #b08b72;
+  color: #000000;
   margin-bottom: 0.2rem;
 }
 .event-dates {
   font-size: 0.98rem;
-  color: #4e6578;
+  color: #000000;
   margin-bottom: 0.2rem;
 }
 .event-details {
@@ -138,17 +140,20 @@ function formatDate(dateStr) {
   margin-right: 0.2rem;
 }
 .event-link {
-  color: #e2a03f;
+  color: #7b2d26;
   text-decoration: underline;
   transition: color 0.2s;
 }
 .event-link:hover {
-  color: #7b2d26;
+  color: $color-warm-gold;
 }
 .event-description {
   margin-top: 0.7rem;
   font-size: 1.01rem;
-  color: #4e6578;
+  color: #000000;
   line-height: 1.5;
+}
+.dark-data {
+  color: #000000 !important;
 }
 </style>
