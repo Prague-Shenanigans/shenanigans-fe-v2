@@ -8,9 +8,9 @@
       </button>
       <div v-if="menuOpen" class="menu-dropdown">
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li v-for="mode in modesStore.modes" :key="mode.key">
+            <a href="#" @click.prevent="selectMode(mode.key)">{{ mode.label }}</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -22,9 +22,15 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useModesStore } from '../stores/modes.store';
 const menuOpen = ref(false);
+const modesStore = useModesStore();
 function toggleMenu() {
   menuOpen.value = !menuOpen.value;
+}
+function selectMode(modeKey) {
+  modesStore.setMode(modeKey);
+  menuOpen.value = false;
 }
 </script>
 

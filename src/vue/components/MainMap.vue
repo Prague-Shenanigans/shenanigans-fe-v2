@@ -8,32 +8,35 @@
       </q-btn>
     </div>
 
-    <PoisPanel
-      v-if="selectedPoi"
-      ref="poisPanelRef"
-      :poi="selectedPoi"
-      @close="handlePanelClose"
-      @get-directions="handleGetDirections"
-      @save-to-trip="handleSaveToTrip"
-      @center-map="handleCenterMap"
-    />
+    <FreeBrowsingMode v-if="currentMode === 'free'" :pois="pois" :selected-poi="selectedPoi" @closeDesktopPanel="selectedPoi = null" />
+    <CreateTourMode v-else-if="currentMode === 'create'" :pois="pois" :selected-poi="selectedPoi" />
+    <FindGuideMode v-else-if="currentMode === 'guide'" :pois="pois" :selected-poi="selectedPoi" />
+    <CommunityToursMode v-else-if="currentMode === 'community'" :pois="pois" :selected-poi="selectedPoi" />
+    <FavouritePoisMode v-else-if="currentMode === 'favourites'" :pois="pois" :selected-poi="selectedPoi" />
   </div>
 </template>
 
 <script setup lang="ts">
 // ===================== IMPORTS =====================
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 //import type { Feature, LineString } from 'geojson';
 import { QBtn, QTooltip } from 'quasar';
 import { usePoisStore } from '../../stores/pois.store';
+import { useModesStore } from '../../stores/modes.store';
 //import { useLocationStore } from '../../stores/location';
 
-// For some reason importing this directly doesn't work
-import PoisPanel from 'src/vue/components/Panels/PoisPanel.vue';
-
-
+// @ts-ignore
+import FreeBrowsingMode from 'src/vue/components/modes/FreeBrowsingMode.vue';
+// @ts-ignore
+import CreateTourMode from 'src/vue/components/modes/CreateTourMode.vue';
+// @ts-ignore
+import FindGuideMode from 'src/vue/components/modes/FindGuideMode.vue';
+// @ts-ignore
+import CommunityToursMode from 'src/vue/components/modes/CommunityToursMode.vue';
+// @ts-ignore
+import FavouritePoisMode from 'src/vue/components/modes/FavouritePoisMode.vue';
 
 // ===================== VARIABLES =====================
 const mapContainer = ref<HTMLDivElement | null>(null);
@@ -42,11 +45,18 @@ const userMarker = ref(null);
 const poisPanelRef = ref(null);
 const poiMarkers = ref([]);
 const selectedPoi = ref(null);
-const routeLayerId = 'route-layer';
 
 const poisStore = usePoisStore();
-//const locationStore = useLocationStore();
+const modesStore = useModesStore();
+const currentMode = computed(() => modesStore.selectedMode);
+const pois = computed(() => poisStore.visiblePois);
 
+// Watch for mode changes and log pois
+watch(currentMode, (newMode) => {
+  console.log(`[MODE: ${newMode}]`, pois.value);
+});
+
+// @ts-ignore
 const { VITE_MAPBOX_TOKEN } = import.meta.env;
 
 mapboxgl.accessToken = VITE_MAPBOX_TOKEN;
@@ -139,77 +149,6 @@ function addPOIMarkers() {
 
   poiMarkers.value.push(marker);
 }
-  });
-}
-
-function handlePanelClose() {
-  poisPanelRef.value?.setCurrentState(0);
-  setTimeout(() => {
-    selectedPoi.value = null;
-  }, 300);
-}
-
-function handleSaveToTrip(poi) {
-  console.log('Saving to trip:', poi.title);
-}
-
-function handleGetDirections(routeData) {
-  if (!mapInstance.value || !routeData.coordinates) return;
-
-  if (mapInstance.value.getSource(routeLayerId)) {
-    mapInstance.value.removeLayer(routeLayerId);
-    mapInstance.value.removeSource(routeLayerId);
-  }
-
-  const geojson ={
-    type: 'Feature',
-    properties: {},
-    geometry: {
-      type: 'LineString',
-      coordinates: routeData.coordinates.map((coord) => [
-        coord.lng,
-        coord.lat,
-      ]),
-    },
-  };
-
-  mapInstance.value.addSource(routeLayerId, {
-    type: 'geojson',
-    data: geojson,
-  });
-
-  mapInstance.value.addLayer({
-    id: routeLayerId,
-    type: 'line',
-    source: routeLayerId,
-    layout: {
-      'line-cap': 'round',
-      'line-join': 'round',
-    },
-    paint: {
-      'line-color': '#4285f4',
-      'line-width': 4,
-      'line-dasharray': [2, 4],
-    },
-  });
-
-  if (routeData.bounds) {
-    mapInstance.value.fitBounds(
-      [
-        [routeData.bounds._southWest.lng, routeData.bounds._southWest.lat],
-        [routeData.bounds._northEast.lng, routeData.bounds._northEast.lat],
-      ],
-      { padding: 50 },
-    );
-  }
-}
-
-function handleCenterMap(routeData) {
-  if (!mapInstance.value) return;
-
-  mapInstance.value.flyTo({
-    center: [routeData.lng, routeData.lat],
-    zoom: 14,
   });
 }
 
