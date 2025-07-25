@@ -11,3 +11,28 @@
 .mapboxgl-ctrl-bottom-left {
  display: none !important;
 }
+
+.floating-window {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 320px;
+  max-width: 60vw;
+  background: rgba(255,255,255,0.97);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  padding: 24px 20px 20px 20px;
+  z-index: 2000;
+  border: 1px solid #e0e0e0;
+  max-height: 60vh;
+  overflow-y: auto; 
+}
+
+.floating-window pre {
+  background: #f7f7f7;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 0.95em;
+  overflow-x: auto;
+}
