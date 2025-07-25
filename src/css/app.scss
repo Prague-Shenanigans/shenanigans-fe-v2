@@ -39,13 +39,11 @@
 
 .poi-marker {
   cursor: pointer !important;
-  border-radius: 50%;
   /* No transform/animation here! */
 }
 .poi-marker-inner {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   transition: box-shadow 0.2s, transform 0.15s, background 0.2s;
 }
 .poi-marker-inner:hover {
