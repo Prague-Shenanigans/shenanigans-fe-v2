@@ -113,6 +113,7 @@ const loadPoisForCurrentView = () => {
 };
 
 function handleMarkerSelect(poi) {
+  console.log('POI selected:', poi);
   selectedPoi.value = poi;
   setTimeout(() => {
     poisPanelRef.value?.setCurrentState(1);
