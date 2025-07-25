@@ -45,6 +45,8 @@ const userMarker = ref(null);
 const poisPanelRef = ref(null);
 const poiMarkers = ref([]);
 const selectedPoi = ref(null);
+// Add a map to track marker elements by POI id
+const markerElements = ref({});
 
 const poisStore = usePoisStore();
 const modesStore = useModesStore();
@@ -120,37 +122,57 @@ function handleMarkerSelect(poi) {
 function addPOIMarkers() {
   poiMarkers.value.forEach((marker) => marker.remove());
   poiMarkers.value = [];
+  markerElements.value = {};
 
   poisStore.visiblePois.forEach((poi) => {
     const el = document.createElement('div');
     el.className = 'poi-marker';
 
-    if (poi.icon_url) {
-      el.style.backgroundImage = `url('${poi.icon_url}')`;
-      el.style.backgroundSize = 'contain';
-      el.style.backgroundRepeat = 'no-repeat';
-      el.style.width = '50px';
-      el.style.height = '50px';
-    } else {
-      el.style.backgroundColor = '#4285f4';
-      el.style.borderRadius = '50%';
-      el.style.width = '36px';
-      el.style.height = '36px';
+    const inner = document.createElement('div');
+    inner.className = 'poi-marker-inner';
+    if (selectedPoi.value && poi.id === selectedPoi.value.id) {
+      inner.classList.add('selected-poi');
     }
 
+    if (poi.icon_url) {
+      inner.style.backgroundImage = `url('${poi.icon_url}')`;
+      inner.style.backgroundSize = 'contain';
+      inner.style.backgroundRepeat = 'no-repeat';
+      inner.style.width = '50px';
+      inner.style.height = '50px';
+    } else {
+      inner.style.width = '36px';
+      inner.style.height = '36px';
+    }
+
+    el.appendChild(inner);
+
     if (mapInstance.value) {
-  const marker = new mapboxgl.Marker({ element: el })
-    .setLngLat([poi.longitude, poi.latitude])
-    .addTo(mapInstance.value); // ✅ fix here
+      const marker = new mapboxgl.Marker({ element: el })
+        .setLngLat([poi.longitude, poi.latitude])
+        .addTo(mapInstance.value);
 
-  marker.getElement().addEventListener('click', () => {
-    handleMarkerSelect(poi);
-  });
+      marker.getElement().addEventListener('click', () => {
+        handleMarkerSelect(poi);
+      });
 
-  poiMarkers.value.push(marker);
-}
+      poiMarkers.value.push(marker);
+      markerElements.value[poi.id] = inner;
+    }
   });
 }
+
+// Watch for selectedPoi changes and update marker classes
+watch(selectedPoi, (newPoi, oldPoi) => {
+  // Remove class from previous
+  if (oldPoi && markerElements.value[oldPoi.id]) {
+    markerElements.value[oldPoi.id].classList.remove('selected-poi');
+  }
+  // Add class to new
+  if (newPoi && markerElements.value[newPoi.id]) {
+    markerElements.value[newPoi.id].classList.add('selected-poi');
+  }
+});
 
 // ===================== WATCHERS =====================
 watch(() => poisStore.visiblePois, addPOIMarkers);
@@ -211,9 +233,14 @@ onUnmounted(() => {
 }
 
 .poi-marker {
-  cursor: pointer;
+  cursor: pointer !important;
   background-color: #4285f4;
   border-radius: 50%;
+  transition: background 0.2s;
+}
+.poi-marker:hover {
+  cursor: pointer !important;
+  background-color: #333 !important;
 }
 </style>
 
