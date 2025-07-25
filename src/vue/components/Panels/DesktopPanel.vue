@@ -1,16 +1,16 @@
 <template>
-  <div ref="panelRef" class="desktop-panel" :class="{ 'is-hidden': !visible }">
-    <div class="panel-content">
-      <div class="panel-header">
-        <button class="close-btn" @click="togglePanel">&times;</button>
-      </div>
-      <div ref="primaryRef" class="panel-primary">
-        <slot>
-          <div class="default-primary">Primary Content</div>
-        </slot>
+  <transition name="slide-panel">
+    <div v-if="visible" ref="panelRef" class="desktop-panel">
+      <button class="close-btn" @click="togglePanel">&times;</button>
+      <div class="panel-content">
+        <div class="panel-primary">
+          <slot>
+            <div class="default-primary">Primary Content</div>
+          </slot>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script setup>
@@ -18,9 +18,8 @@ import { ref, defineEmits } from 'vue';
 import { useClickOutsidePanel } from 'src/utils/useClickOutsidePanel';
 
 const emit = defineEmits(['closeDesktopPanel']);
-const visible = ref(true);
+const visible = ref(false);
 const panelRef = ref(null);
-const primaryRef = ref(null);
 
 function togglePanel() {
   visible.value = !visible.value;
@@ -49,23 +48,28 @@ defineExpose({
   position: fixed;
   top: 0;
   left: 0;
-  min-width: 33vw;
-  max-width: 50vw;
-  width: 100%;
+  min-width: 30vw;
+  max-width: 40vw;
   height: 100vh;
   background: white;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  transform: translateX(0);
 }
-.desktop-panel.is-hidden {
+
+.slide-panel-enter-active,
+.slide-panel-leave-active {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide-panel-enter-from,
+.slide-panel-leave-to {
   transform: translateX(-100%);
+}
+.slide-panel-enter-to,
+.slide-panel-leave-from {
+  transform: translateX(0);
 }
 
 .panel-content {
@@ -84,13 +88,16 @@ defineExpose({
 }
 
 .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
   background: none;
   border: none;
   font-size: 2rem;
   color: #888;
   cursor: pointer;
   transition: color 0.2s;
-  margin-left: auto;
+  z-index: 1100; /* higher than panel content */
 }
 .close-btn:hover {
   color: #333;
