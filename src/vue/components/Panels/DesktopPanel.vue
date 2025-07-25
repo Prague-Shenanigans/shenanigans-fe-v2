@@ -41,6 +41,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .desktop-panel {
+  padding-top: 100px;
   position: fixed;
   top: 0;
   left: 0;
