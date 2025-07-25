@@ -235,7 +235,6 @@ onUnmounted(() => {
 .poi-marker {
   cursor: pointer !important;
   background-color: #4285f4;
-  border-radius: 50%;
   transition: background 0.2s;
 }
 .poi-marker:hover {
