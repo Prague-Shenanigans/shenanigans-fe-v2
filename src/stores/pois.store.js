@@ -12,9 +12,28 @@ export const usePoisStore = defineStore('pois', () => {
   const cache = ref(new Map()); // Cache for POIs by grid cell
   const currentBounds = ref(null);
   const currentZoom = ref(null);
+  const selectedPoi = ref(null); // Store the selected POI separately
 
   // Computed
-  const visiblePois = computed(() => pois.value);
+  const visiblePois = computed(() => {
+    // Combine current POIs with selected POI if it exists and is not already in the list
+    const currentPois = pois.value;
+    const selected = selectedPoi.value;
+    
+    if (!selected) {
+      return currentPois;
+    }
+    
+    // Check if selected POI is already in the current list
+    const isSelectedInCurrent = currentPois.some(poi => poi.id === selected.id);
+    
+    if (isSelectedInCurrent) {
+      return currentPois;
+    }
+    
+    // Add selected POI to the list if it's not already there
+    return [...currentPois, selected];
+  });
 
   // Methods
   const getGridKey = (bounds, zoom) => {
@@ -65,6 +84,15 @@ export const usePoisStore = defineStore('pois', () => {
     }
   };
 
+  const setSelectedPoi = (poi) => {
+    console.log('Setting selected POI:', poi);
+    selectedPoi.value = poi;
+  };
+
+  const clearSelectedPoi = () => {
+    selectedPoi.value = null;
+  };
+
   const clearCache = () => {
     cache.value.clear();
   };
@@ -76,12 +104,15 @@ export const usePoisStore = defineStore('pois', () => {
     error,
     currentBounds,
     currentZoom,
+    selectedPoi,
 
     // Computed
     visiblePois,
 
     // Methods
     loadPois,
+    setSelectedPoi,
+    clearSelectedPoi,
     clearCache,
   };
 });

@@ -8,7 +8,7 @@
       </q-btn>
     </div>
 
-    <FreeBrowsingMode v-if="currentMode === 'free'" :pois="pois" :selected-poi="selectedPoi" @closeDesktopPanel="selectedPoi = null" />
+    <FreeBrowsingMode v-if="currentMode === 'free'" :pois="pois" :selected-poi="selectedPoi" @closeDesktopPanel="poisStore.clearSelectedPoi()" />
     <CreateTourMode v-else-if="currentMode === 'create'" :pois="pois" :selected-poi="selectedPoi" />
     <FindGuideMode v-else-if="currentMode === 'guide'" :pois="pois" :selected-poi="selectedPoi" />
     <CommunityToursMode v-else-if="currentMode === 'community'" :pois="pois" :selected-poi="selectedPoi" />
@@ -44,14 +44,16 @@ const mapInstance = ref(null);
 const userMarker = ref(null);
 const poisPanelRef = ref(null);
 const poiMarkers = ref([]);
-const selectedPoi = ref(null);
 // Add a map to track marker elements by POI id
 const markerElements = ref({});
 
 const poisStore = usePoisStore();
+console.log('Store initialized:', poisStore);
+console.log('Store methods:', Object.getOwnPropertyNames(poisStore));
 const modesStore = useModesStore();
 const currentMode = computed(() => modesStore.selectedMode);
 const pois = computed(() => poisStore.visiblePois);
+const selectedPoi = computed(() => poisStore.selectedPoi);
 
 // Watch for mode changes and log pois
 watch(currentMode, (newMode) => {
@@ -114,7 +116,19 @@ const loadPoisForCurrentView = () => {
 
 function handleMarkerSelect(poi) {
   console.log('POI selected:', poi);
-  selectedPoi.value = poi;
+  console.log('poisStore methods:', Object.keys(poisStore));
+  console.log('setSelectedPoi exists:', typeof poisStore.setSelectedPoi);
+    
+  if (typeof poisStore.setSelectedPoi === 'function') {
+    poisStore.setSelectedPoi(poi);
+  } else {
+    console.error('setSelectedPoi is not a function:', poisStore.setSelectedPoi);
+    // Fallback: directly set the selectedPoi value
+    if (poisStore.selectedPoi) {
+      poisStore.selectedPoi.value = poi;
+    }
+  }
+  
   setTimeout(() => {
     poisPanelRef.value?.setCurrentState(1);
   }, 50);
@@ -131,8 +145,18 @@ function addPOIMarkers() {
 
     const inner = document.createElement('div');
     inner.className = 'poi-marker-inner';
+    
+    // Check if this POI is selected
     if (selectedPoi.value && poi.id === selectedPoi.value.id) {
       inner.classList.add('selected-poi');
+      
+      // Check if this POI is persistent (selected but not in current fetched data)
+      const isInCurrentData = poisStore.pois.some(currentPoi => currentPoi.id === poi.id);
+      if (!isInCurrentData) {
+        inner.classList.add('persistent-poi');
+        inner.title = 'Selected POI (persistent)';
+        console.log(`📍 POI "${poi.title}" is now persistent (selected but not in current data)`);
+      }
     }
 
     if (poi.icon_url) {
@@ -241,6 +265,47 @@ onUnmounted(() => {
 .poi-marker:hover {
   cursor: pointer !important;
   background-color: #333 !important;
+}
+
+.poi-marker-inner.selected-poi {
+  background-color: #ff6b35 !important;
+  border: 3px solid #ff4500;
+  box-shadow: 0 0 10px rgba(255, 107, 53, 0.6);
+  animation: pulse 2s infinite;
+}
+
+.poi-marker-inner.persistent-poi {
+  background-color: #ff4500 !important;
+  border: 3px solid #ff0000;
+  box-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
+  animation: persistent-pulse 1.5s infinite;
+}
+
+@keyframes persistent-pulse {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 69, 0, 1);
+    transform: scale(1.1);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.6);
+  }
 }
 </style>
 
