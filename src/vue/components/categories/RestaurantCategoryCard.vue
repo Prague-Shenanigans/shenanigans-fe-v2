@@ -49,12 +49,20 @@
     <div class="restaurant-description" v-if="restaurant.description">
       <div class="dark-data"><MarkdownRenderer :content="restaurant.description" /></div>
     </div>
+    
+    <!-- Image Gallery -->
+    <ImageGallery 
+      :images="restaurant.pictures" 
+      :title="restaurant.name"
+    />
   </div>
 </template>
 
 <script setup>
 import { defineProps, computed } from 'vue';
 import MarkdownRenderer from '../common/MarkdownRenderer.vue';
+import ImageGallery from '../common/ImageGallery.vue';
+
 const props = defineProps({ restaurant: { type: Object, required: true } });
 const restaurant = props.restaurant;
 
@@ -78,7 +86,9 @@ function capitalize(str) {
   padding: 1.2rem 1.5rem 1.2rem 1.5rem;
   margin-bottom: 1.2rem;
   color: #4e6578;
-  max-width: 600px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
   border-left: 6px solid #6b7c2a;
 }
 .restaurant-header {

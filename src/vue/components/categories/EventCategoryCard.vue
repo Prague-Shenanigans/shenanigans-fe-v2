@@ -52,14 +52,21 @@
     <div class="event-description" v-if="event.description">
       <MarkdownRenderer :content="event.description" />
     </div>
+    
+    <!-- Image Gallery -->
+    <ImageGallery 
+      :images="event.pictures" 
+      :title="event.name"
+    />
   </div>
 </template>
 
 <script setup>
 import { defineProps } from 'vue';
 import MarkdownRenderer from '../common/MarkdownRenderer.vue';
-const props = defineProps({ event: { type: Object, required: true } });
-const event = props.event;
+import ImageGallery from '../common/ImageGallery.vue';
+
+defineProps({ event: { type: Object, required: true } });
 
 function formatDate(dateStr) {
   if (!dateStr) return '';
@@ -85,7 +92,9 @@ function formatDate(dateStr) {
   padding: 1.2rem 1.5rem 1.2rem 1.5rem;
   margin-bottom: 1.2rem;
   color: #252729;
-  max-width: 600px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 .event-header {
   margin-bottom: 0.7rem;

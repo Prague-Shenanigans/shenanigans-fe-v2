@@ -112,6 +112,8 @@ defineExpose({
   height: 100%;
   /* Custom scrollbar styles */
   scrollbar-width: thin; /* Firefox */
+  //make the horizontal scrollbar not possible to scroll
+  overflow-x: hidden;
   scrollbar-color: rgba(0,0,0,0.15) rgba(0,0,0,0.03); /* Firefox */
 }
 .panel-primary::-webkit-scrollbar {

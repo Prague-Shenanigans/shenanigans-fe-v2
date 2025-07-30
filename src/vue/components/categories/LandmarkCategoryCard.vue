@@ -2,6 +2,13 @@
   <div class="category-card landmark-card">
     <h4>{{ landmark.title || landmark.name }}</h4>
     <p v-if="landmark.description">{{ landmark.description }}</p>
+    
+    <!-- Image Gallery -->
+    <ImageGallery 
+      :images="landmark.pictures" 
+      :title="landmark.title || landmark.name"
+    />
+    
     <div class="details">
       <span v-if="landmark.landmark_type">Type: {{ landmark.landmark_type }}</span>
       <span v-if="landmark.built_year">Built: {{ landmark.built_year }}</span>
@@ -15,11 +22,12 @@
 </template>
 
 <script setup>
+import ImageGallery from '../common/ImageGallery.vue';
+
 defineProps({ landmark: { type: Object, required: true } });
 </script>
 
 <style scoped lang="scss">
- 
 .landmark-card {
   background: $color-warm-beige;
   border-left: 6px solid $color-warm-gold;
@@ -28,7 +36,33 @@ defineProps({ landmark: { type: Object, required: true } });
   border-radius: 12px;
   color: $color-charcoal-brown;
   box-shadow: 0 2px 8px rgba(226, 160, 63, 0.08);
-  h4 { color: $color-warm-gold; }
-  a { color: $color-muted-teal; text-decoration: underline; }
+  max-width: 100%;
+  min-width: 0; // Allow shrinking
+  overflow: hidden; // Prevent content from overflowing
+  
+  h4 { 
+    color: $color-warm-gold; 
+    margin-bottom: 0.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem); // Responsive font size
+  }
+  
+  p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: clamp(0.8rem, 2vw, 0.9rem); // Responsive font size
+  }
+  
+  a { 
+    color: $color-muted-teal; 
+    text-decoration: underline; 
+  }
+  
+  .details {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: clamp(0.75rem, 1.8vw, 0.85rem); // Responsive font size
+  }
 }
 </style> 

@@ -157,6 +157,7 @@ defineExpose({
   align-items: center;
   justify-content: flex-start;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 </style> 
