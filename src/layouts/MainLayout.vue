@@ -20,7 +20,7 @@
           href="https://shenanigans.cz/#/mission"
           class="nav-button -rotate-1"
           :class="{ 'active-nav': activeNav === 'mission' }"
-          @click.prevent="navigate('#/mission')"
+          @click.prevent="navigate('mission')"
         >
           Mission
         </a>
@@ -28,7 +28,7 @@
           href="https://shenanigans.cz/#/explore"
           class="nav-button rotate-1"
           :class="{ 'active-nav': activeNav === 'explore' }"
-          @click.prevent="navigate('#/map')"
+          @click.prevent="navigate('map')"
         >
           Explore
         </a>
@@ -36,7 +36,7 @@
           href="https://shenanigans.cz/#/meet"
           class="nav-button -rotate-1"
           :class="{ 'active-nav': activeNav === 'meet' }"
-          @click.prevent="navigate('#/podcasts')"
+          @click.prevent="navigate('podcasts')"
         >
           Meet the People
         </a>
