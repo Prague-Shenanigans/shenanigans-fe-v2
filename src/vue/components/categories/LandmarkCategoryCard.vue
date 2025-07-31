@@ -1,13 +1,14 @@
 <template>
   <div class="category-card landmark-card">
-    <h4>{{ landmark.title || landmark.name }}</h4>
-    <p v-if="landmark.description">{{ landmark.description }}</p>
-    
+    <h4 class="heading-landmark">{{ landmark.title || landmark.name }}</h4>
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="landmark.pictures" 
-      :title="landmark.title || landmark.name"
+    :images="landmark.pictures" 
+    :title="landmark.title || landmark.name"
     />
+    <div v-if="landmark.markdown_content" class="landmark-description">
+      <MarkdownRenderer :content="landmark.markdown_content" />
+    </div>
     
     <div class="details">
       <span v-if="landmark.landmark_type">Type: {{ landmark.landmark_type }}</span>
@@ -23,6 +24,7 @@
 
 <script setup>
 import ImageGallery from '../common/ImageGallery.vue';
+import MarkdownRenderer from '../common/MarkdownRenderer.vue';
 
 defineProps({ landmark: { type: Object, required: true } });
 </script>
@@ -63,6 +65,15 @@ defineProps({ landmark: { type: Object, required: true } });
     word-wrap: break-word;
     overflow-wrap: break-word;
     font-size: clamp(0.75rem, 1.8vw, 0.85rem); // Responsive font size
+  }
+
+  .landmark-description {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(226, 160, 63, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
 }
 </style> 

@@ -1,13 +1,15 @@
 <template>
   <div class="category-card scammer-card">
-    <h4>{{ scammer.title || scammer.name }}</h4>
-    <p v-if="scammer.description">{{ scammer.description }}</p>
+    <h4 class="heading-scammer">{{ scammer.title || scammer.name }}</h4>
     
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="scammer.pictures" 
-      :title="scammer.title || scammer.name"
+    :images="scammer.pictures" 
+    :title="scammer.title || scammer.name"
     />
+    <div v-if="scammer.markdown_content" class="scammer-description">
+      <MarkdownRenderer :content="scammer.markdown_content" />
+    </div>
     
     <div class="details">
       <span v-if="scammer.scam_type">Type: {{ scammer.scam_type }}</span>
@@ -23,6 +25,7 @@
 
 <script setup>
 import ImageGallery from '../common/ImageGallery.vue';
+import MarkdownRenderer from '../common/MarkdownRenderer.vue';
 
 defineProps({ scammer: { type: Object, required: true } });
 </script>
@@ -56,6 +59,15 @@ defineProps({ scammer: { type: Object, required: true } });
   .details {
     word-wrap: break-word;
     overflow-wrap: break-word;
+  }
+
+  .scammer-description {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(231, 76, 60, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
 }
 </style> 

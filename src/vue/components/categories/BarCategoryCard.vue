@@ -1,13 +1,15 @@
 <template>
   <div class="category-card bar-card">
-    <h4>{{ bar.title || bar.name }}</h4>
-    <p v-if="bar.description">{{ bar.description }}</p>
+    <h4 class="heading-bar">{{ bar.title || bar.name }}</h4>
     
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="bar.pictures" 
-      :title="bar.title || bar.name"
+    :images="bar.pictures" 
+    :title="bar.title || bar.name"
     />
+    <div v-if="bar.markdown_content" class="bar-description">
+      <MarkdownRenderer :content="bar.markdown_content" />
+    </div>
     
     <div class="details">
       <span v-if="bar.bar_type">Type: {{ bar.bar_type }}</span>
@@ -24,6 +26,7 @@
 
 <script setup>
 import ImageGallery from '../common/ImageGallery.vue';
+import MarkdownRenderer from '../common/MarkdownRenderer.vue';
 
 defineProps({ bar: { type: Object, required: true } });
 </script>
@@ -57,6 +60,15 @@ defineProps({ bar: { type: Object, required: true } });
   .details {
     word-wrap: break-word;
     overflow-wrap: break-word;
+  }
+
+  .bar-description {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(123, 45, 38, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
 }
 </style> 

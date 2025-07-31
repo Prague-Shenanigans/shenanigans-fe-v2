@@ -1,13 +1,15 @@
 <template>
   <div class="category-card pub-card">
     <h4 class="heading-pub">{{ pub.title || pub.name }}</h4>
-    <p v-if="pub.description">{{ pub.description }}</p>
     
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="pub.pictures" 
-      :title="pub.title || pub.name"
+    :images="pub.pictures" 
+    :title="pub.title || pub.name"
     />
+    <div v-if="pub.markdown_content" class="pub-description">
+      <MarkdownRenderer :content="pub.markdown_content" />
+    </div>
     
     <div class="details">
       <span v-if="pub.pub_type">Type: {{ pub.pub_type }}</span>
@@ -24,6 +26,7 @@
 
 <script setup>
 import ImageGallery from '../common/ImageGallery.vue';
+import MarkdownRenderer from '../common/MarkdownRenderer.vue';
 
 defineProps({ pub: { type: Object, required: true } });
 </script>
@@ -57,6 +60,15 @@ defineProps({ pub: { type: Object, required: true } });
   .details {
     word-wrap: break-word;
     overflow-wrap: break-word;
+  }
+
+  .pub-description {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(63, 122, 137, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
 }
 </style> 

@@ -55,6 +55,9 @@
       :images="restaurant.pictures" 
       :title="restaurant.name"
     />
+    <div v-if="restaurant.markdown_content" class="scammer-description">
+      <MarkdownRenderer :content="restaurant.markdown_content" />
+    </div>
   </div>
 </template>
 

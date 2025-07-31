@@ -1,13 +1,15 @@
 <template>
   <div class="category-card underground-card">
-    <h4>{{ underground.title || underground.name }}</h4>
-    <p v-if="underground.description">{{ underground.description }}</p>
+    <h4 class="heading-underground">{{ underground.title || underground.name }}</h4>
     
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="underground.pictures" 
-      :title="underground.title || underground.name"
+    :images="underground.pictures" 
+    :title="underground.title || underground.name"
     />
+    <div v-if="underground.markdown_content" class="underground-description">
+      <MarkdownRenderer :content="underground.markdown_content" />
+    </div>
     
     <div class="details">
       <span v-if="underground.underground_type">Type: {{ underground.underground_type }}</span>
@@ -58,6 +60,15 @@ defineProps({ underground: { type: Object, required: true } });
   .details {
     word-wrap: break-word;
     overflow-wrap: break-word;
+  }
+
+  .underground-description {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(166, 177, 140, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
 }
 </style> 

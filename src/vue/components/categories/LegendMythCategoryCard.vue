@@ -1,13 +1,15 @@
 <template>
   <div class="category-card legend-myth-card">
-    <h4>{{ legendMyth.title || legendMyth.name }}</h4>
-    <p v-if="legendMyth.description">{{ legendMyth.description }}</p>
+    <h4 class="heading-legend-myth">{{ legendMyth.title || legendMyth.name }}</h4>
     
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="legendMyth.pictures" 
-      :title="legendMyth.title || legendMyth.name"
+    :images="legendMyth.pictures" 
+    :title="legendMyth.title || legendMyth.name"
     />
+    <div v-if="legendMyth.markdown_content" class="legend-description">
+      <MarkdownRenderer :content="legendMyth.markdown_content" />
+    </div>
     
     <div class="details">
       <span v-if="legendMyth.legend_type">Type: {{ legendMyth.legend_type }}</span>
@@ -23,6 +25,7 @@
 
 <script setup>
 import ImageGallery from '../common/ImageGallery.vue';
+import MarkdownRenderer from '../common/MarkdownRenderer.vue';
 
 defineProps({ legendMyth: { type: Object, required: true } });
 </script>
@@ -56,6 +59,15 @@ defineProps({ legendMyth: { type: Object, required: true } });
   .details {
     word-wrap: break-word;
     overflow-wrap: break-word;
+  }
+
+  .legend-description {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(107, 78, 113, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
 }
 </style> 

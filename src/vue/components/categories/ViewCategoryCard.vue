@@ -1,13 +1,15 @@
 <template>
   <div class="category-card view-card">
-    <h4>{{ view.title || view.name }}</h4>
-    <p v-if="view.description">{{ view.description }}</p>
+    <h4 class="heading-view">{{ view.title || view.name }}</h4>
     
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="view.pictures" 
-      :title="view.title || view.name"
+    :images="view.pictures" 
+    :title="view.title || view.name"
     />
+    <div v-if="view.markdown_content" class="view-description">
+      <MarkdownRenderer :content="view.markdown_content" />
+    </div>
     
     <div class="details">
       <span v-if="view.view_type">Type: {{ view.view_type }}</span>
@@ -24,6 +26,7 @@
 
 <script setup>
 import ImageGallery from '../common/ImageGallery.vue';
+import MarkdownRenderer from '../common/MarkdownRenderer.vue';
 
 defineProps({ view: { type: Object, required: true } });
 </script>
@@ -57,6 +60,15 @@ defineProps({ view: { type: Object, required: true } });
   .details {
     word-wrap: break-word;
     overflow-wrap: break-word;
+  }
+
+  .view-description {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(63, 122, 137, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
 }
 </style> 

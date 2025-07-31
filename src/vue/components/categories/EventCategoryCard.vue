@@ -58,6 +58,9 @@
       :images="event.pictures" 
       :title="event.name"
     />
+    <div v-if="event.markdown_content" class="scammer-description">
+      <MarkdownRenderer :content="event.markdown_content" />
+    </div>
   </div>
 </template>
 
