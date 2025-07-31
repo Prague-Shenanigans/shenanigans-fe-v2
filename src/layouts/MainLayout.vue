@@ -73,16 +73,36 @@
     <div class="layout-content">
       <slot />
     </div>
+    
+    <!-- Filter Modal -->
+    <div v-if="filterModalOpen" class="modal-overlay" @click="closeFilterModal">
+      <div class="modal-container" @click.stop>
+        <!-- Header -->
+        <div class="modal-header">
+          <h3 class="modal-title">{{ modalTitle }}</h3>
+          <button class="close-btn" @click="closeFilterModal">
+            <span class="close-icon">×</span>
+          </button>
+        </div>
+
+                  <!-- Content -->
+          <div class="modal-content">
+            <FilterModal />
+          </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { useModesStore } from '../stores/modes.store';
+import FilterModal from '../vue/components/filters/FilterModal.vue';
 
 const menuOpen = ref(false);
 const activeNav = ref('explore');
 const filterActive = ref(false);
+const filterModalOpen = ref(false);
 const modesStore = useModesStore();
 const hamburgerContainer = ref(null);
 
@@ -98,10 +118,19 @@ const filterButtonText = computed(() => {
   return modeMap[modesStore.selectedMode] || 'Filter';
 });
 
+// Computed property for modal title
+const modalTitle = computed(() => {
+  return 'Filters & Preferences';
+});
+
 function toggleFilter() {
-  filterActive.value = !filterActive.value;
-  // TODO: Implement filter functionality
-  console.log('Filter toggled:', filterActive.value);
+  filterModalOpen.value = true;
+  filterActive.value = true;
+}
+
+function closeFilterModal() {
+  filterModalOpen.value = false;
+  filterActive.value = false;
 }
 
 function toggleMenu() {
@@ -135,7 +164,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap');
 
 .default-layout {
@@ -369,5 +398,118 @@ onBeforeUnmount(() => {
   .nav-button {
     display: none;
   }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9993;
+  cursor: pointer;
+}
+
+.modal-container {
+  background: #fceac9;
+  border: 3px solid #E2592A;
+  border-radius: 12px;
+  cursor: default;
+  position: relative;
+  z-index: 9994;
+  
+  /* Desktop: 80vw x 80vh */
+  @media (min-width: 1024px) {
+    width: 80vw;
+    height: 80vh;
+    max-width: 80vw;
+    max-height: 80vh;
+  }
+  
+  /* Mobile/Tablet: 100vw x 100vh */
+  @media (max-width: 1023px) {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #E2592A 0%, #d44a1f 100%);
+  border-bottom: 3px solid #E2592A;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  .modal-title {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fceac9;
+    font-family: 'Amatic SC', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    color: #fceac9;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: rgba(252, 234, 201, 0.2);
+      transform: scale(1.1);
+    }
+  }
+  
+  .close-icon {
+    line-height: 1;
+    font-weight: 300;
+  }
+}
+
+.modal-content {
+  padding: 2rem;
+  background: #fceac9;
+  overflow-y: auto;
+  height: calc(100% - 80px);
+  
+  @media (max-width: 1023px) {
+    padding: 1.5rem;
+  }
+}
+
+/* Modal animations */
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.3s ease;
+}
+
+.modal-enter-from {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.modal-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
 }
 </style>
