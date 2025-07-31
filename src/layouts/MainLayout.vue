@@ -2,9 +2,16 @@
   <div class="default-layout">
     <!-- Top Navigation Bar -->
     <header class="top-bar">
-      <!-- Logo -->
+      <!-- Logo and Filter Button -->
       <div class="logo-container">
         <img src="/web_logo_v3.png" alt="Shenanigans Logo" class="logo" />
+        <button
+          class="filter-button nav-button"
+          :class="{ 'active-filter': filterActive }"
+          @click="toggleFilter"
+        >
+          {{ filterButtonText }}
+        </button>
       </div>
 
       <!-- Navigation Buttons -->
@@ -70,13 +77,32 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { useModesStore } from '../stores/modes.store';
 
 const menuOpen = ref(false);
 const activeNav = ref('explore');
+const filterActive = ref(false);
 const modesStore = useModesStore();
 const hamburgerContainer = ref(null);
+
+// Computed property for filter button text based on selected mode
+const filterButtonText = computed(() => {
+  const modeMap = {
+    'free': 'Filter Places',
+    'create': 'Update Tour preferences',
+    'guide': 'Filter Guides',
+    'community': 'Filter Tours',
+    'favourites': 'Filter Favourites'
+  };
+  return modeMap[modesStore.selectedMode] || 'Filter';
+});
+
+function toggleFilter() {
+  filterActive.value = !filterActive.value;
+  // TODO: Implement filter functionality
+  console.log('Filter toggled:', filterActive.value);
+}
 
 function toggleMenu() {
   menuOpen.value = !menuOpen.value;
@@ -134,11 +160,36 @@ onBeforeUnmount(() => {
 }
 
 /* Logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .logo-container .logo {
-  margin-left: 50px;
   height: 80px;
   width: auto;
   rotate: -2deg;
+}
+
+/* Filter Button */
+.filter-button {
+  background-color: #fceac9 !important;
+  border-color: #2e9000 !important;
+  color: #2e9000 !important;
+  font-size: 1.2rem !important;
+  padding: 0.4rem 1.2rem !important;
+}
+
+.filter-button:hover {
+  background-color: #2e9000 !important;
+  color: #fceac9 !important;
+  transform: scale(1.05);
+}
+
+.active-filter {
+  background-color: #2e9000 !important;
+  color: #fceac9 !important;
 }
 
 /* Navigation Buttons */
