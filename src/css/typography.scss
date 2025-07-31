@@ -20,6 +20,18 @@
 //
 // 3. For container-based styling: Wrap content in .category-heading.{category}
 //    Example: <div class="category-heading event">...</div>
+//
+// 4. For POI components:
+//    - .poi-header-image - for POI header images
+//    - .poi-title - for POI titles
+//    - .poi-markdown - for POI markdown content containers
+//
+// Example:
+// <img class="poi-header-image" :src="poi.header_image_url" />
+// <h2 class="poi-title">{{ poi.title }}</h2>
+// <div class="poi-markdown">
+//   <MarkdownRenderer :content="poi.markdown_content" />
+// </div>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
 // Import color variables
@@ -37,13 +49,13 @@ h1, h2, h3, h4 {
 h1 {
   font-size: 2rem;
   color: $color-deep-burgundy;
-  margin-bottom: 1rem;
+  margin: 1rem;
 }
 
 h2 {
   font-size: 1.5rem;
   color: $color-deep-burgundy;
-  margin-bottom: 0.8rem;
+  margin: 0.8rem;
 }
 
 h3 {
@@ -132,4 +144,115 @@ h4 {
 
 .heading-scammer {
   color: $color-slate-blue !important;
+}
+
+// ===================== POI Components =====================
+// Common styles for POI-related components
+
+// POI Header Image
+.poi-header-image {
+  width: 100%;
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 18px;
+  margin-bottom: 1.2rem;
+  display: block;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+// POI Title
+.poi-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 1rem 2rem 1rem 0rem !important;
+  color: $color-deep-burgundy;
+  line-height: 1.2;
+}
+
+// POI Markdown Content
+.poi-markdown {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(123, 45, 38, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  line-height: 1.6;
+  color: #333333;
+  font-family: Roboto,'Montserrat', Arial, Helvetica, sans-serif;
+
+  :deep(h1) {
+    font-size: 1.8rem;
+    margin: 1.5rem 0 1rem;
+    font-weight: 600;
+    color: $color-deep-burgundy;
+    line-height: 1.3;
+  }
+
+  :deep(h2) {
+    font-size: 1.5rem;
+    margin: 1.2rem 0 1rem;
+    font-weight: 600;
+    color: $color-deep-burgundy;
+    line-height: 1.3;
+  }
+
+  :deep(h3) {
+    font-size: 1.3rem;
+    margin: 1rem 0;
+    font-weight: 600;
+    color: $color-deep-burgundy;
+    line-height: 1.3;
+  }
+
+  :deep(p) {
+    margin: 1rem 0;
+    color: #333333;
+    line-height: 1.6;
+  }
+
+  :deep(ul),
+  :deep(ol) {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    color: #333333;
+  }
+
+  :deep(li) {
+    margin: 0.5rem 0;
+  }
+
+  :deep(strong) {
+    font-weight: 600;
+    color: $color-deep-burgundy;
+  }
+
+  :deep(em) {
+    font-style: italic;
+    color: #666666;
+  }
+
+  :deep(hr) {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 2rem 0;
+  }
+
+  :deep(blockquote) {
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    border-left: 4px solid $color-deep-burgundy;
+    background: #f8f9fa;
+    color: #666666;
+  }
+
+  :deep(iframe) {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
 } 

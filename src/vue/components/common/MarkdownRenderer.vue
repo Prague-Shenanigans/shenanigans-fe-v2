@@ -22,10 +22,14 @@ function renderMarkdown() {
   // Convert markdown to HTML
   const htmlContent = marked(props.content);
 
-  // Sanitize the HTML content
+  // Sanitize the HTML content with iframe support
   const sanitizedContent = DOMPurify.sanitize(htmlContent, {
-    ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'blockquote', 'code', 'strong', 'em', 'br'],
-    ALLOWED_ATTR: ['href', 'target', 'rel'],
+    ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'blockquote', 'code', 'strong', 'em', 'br', 'iframe'],
+    ALLOWED_ATTR: [
+      'href', 'target', 'rel', 
+      'src', 'width', 'height', 'frameborder', 'allowfullscreen', 'allow',
+      'title', 'referrerpolicy'
+    ],
   });
 
   contentRef.value.innerHTML = sanitizedContent;
@@ -50,7 +54,6 @@ onMounted(renderMarkdown);
   :deep(h4),
   :deep(h5),
   :deep(h6) {
-    margin: 1.5em 0 0.5em;
     font-weight: 600;
   }
 
@@ -84,6 +87,16 @@ onMounted(renderMarkdown);
     padding: 0.2em 0.4em;
     border-radius: 3px;
     font-family: monospace;
+  }
+
+  :deep(iframe) {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: block;
   }
 }
 </style>

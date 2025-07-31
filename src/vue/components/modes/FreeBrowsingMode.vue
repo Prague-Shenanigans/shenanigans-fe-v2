@@ -2,7 +2,7 @@
   <DesktopPanel ref="desktopPanelRef" v-if="isDesktop" @closeDesktopPanel="$emit('closeDesktopPanel')">
     <template #default>
       <div v-if="props.selectedPoi">
-        <h2 class="poi-title">{{ props.selectedPoi.title }}</h2>
+        <h1 class="poi-title">{{ props.selectedPoi.title }}</h1>
         <img
           v-if="props.selectedPoi.header_image_url"
           :src="props.selectedPoi.header_image_url"
@@ -391,100 +391,6 @@ function getCategoryItems(key) {
   color: #b08b72;
   font-style: italic;
   margin-top: 1rem;
-}
-.poi-header-image {
-  width: 100%;
-  max-width: 100%;
-  max-height: 320px;
-  object-fit: cover;
-  border-radius: 18px;
-  margin-bottom: 1.2rem;
-  display: block;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-}
-
-.poi-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #7b2d26;
-  line-height: 1.2;
-}
-
-.poi-markdown {
-  margin: 1.5rem 0;
-  padding: 1.5rem;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid rgba(123, 45, 38, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  line-height: 1.6;
-  color: #333333;
-
-  :deep(h1) {
-    font-size: 1.8rem;
-    margin: 1.5rem 0 1rem;
-    font-weight: 600;
-    color: #7b2d26;
-    line-height: 1.3;
-  }
-
-  :deep(h2) {
-    font-size: 1.5rem;
-    margin: 1.2rem 0 1rem;
-    font-weight: 600;
-    color: #7b2d26;
-    line-height: 1.3;
-  }
-
-  :deep(h3) {
-    font-size: 1.3rem;
-    margin: 1rem 0;
-    font-weight: 600;
-    color: #7b2d26;
-    line-height: 1.3;
-  }
-
-  :deep(p) {
-    margin: 1rem 0;
-    color: #333333;
-    line-height: 1.6;
-  }
-
-  :deep(ul),
-  :deep(ol) {
-    margin: 1rem 0;
-    padding-left: 1.5rem;
-    color: #333333;
-  }
-
-  :deep(li) {
-    margin: 0.5rem 0;
-  }
-
-  :deep(strong) {
-    font-weight: 600;
-    color: #7b2d26;
-  }
-
-  :deep(em) {
-    font-style: italic;
-    color: #666666;
-  }
-
-  :deep(hr) {
-    border: none;
-    border-top: 1px solid #e0e0e0;
-    margin: 2rem 0;
-  }
-
-  :deep(blockquote) {
-    margin: 1rem 0;
-    padding: 0.5rem 1rem;
-    border-left: 4px solid #7b2d26;
-    background: #f8f9fa;
-    color: #666666;
-  }
 }
 </style>
 
