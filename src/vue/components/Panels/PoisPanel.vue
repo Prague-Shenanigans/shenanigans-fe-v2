@@ -5,6 +5,7 @@
         <div class="header-content">
           <div class="header-top">
             <h3>{{ poi.title }}</h3>
+
             <div class="actions-column">
               <q-btn round flat color="primary" icon="directions" class="action-btn" @click="handleNavigate">
                 <q-tooltip>Get directions</q-tooltip>
@@ -42,7 +43,7 @@
             </div>
             <div class="detail-item">
               <q-icon name="schedule" />
-              <span>{{ poi.opening_hours }}</span>
+              <span>{{ poi.opening_hours }}</span>             
             </div>
             <div v-if="poi.tags && poi.tags.length" class="detail-item tags-row">
               <div class="tags-list">
@@ -53,7 +54,7 @@
             </div>
           </div>
         </div>
-        <div class="poi-markdown">
+        <div v-if="poi.markdown_content" class="poi-markdown">
           <MarkdownRenderer :content="poi.markdown_content" />
         </div>
       </div>
@@ -320,6 +321,10 @@ export default {
 .poi-markdown {
   line-height: 1.6;
   color: #333333;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 
   :deep(h1) {
     font-size: 1.8rem;
@@ -348,6 +353,7 @@ export default {
   :deep(p) {
     margin: 1rem 0;
     color: #333333;
+    line-height: 1.6;
   }
 
   :deep(ul),
@@ -370,6 +376,19 @@ export default {
     border: none;
     border-top: 1px solid #e0e0e0;
     margin: 2rem 0;
+  }
+
+  :deep(em) {
+    font-style: italic;
+    color: #666666;
+  }
+
+  :deep(blockquote) {
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    border-left: 4px solid #1976d2;
+    background: #f8f9fa;
+    color: #666666;
   }
 }
 </style>

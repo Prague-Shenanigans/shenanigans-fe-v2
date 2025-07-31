@@ -1,6 +1,6 @@
 <template>
   <div class="category-card pub-card">
-    <h4>{{ pub.title || pub.name }}</h4>
+    <h4 class="heading-pub">{{ pub.title || pub.name }}</h4>
     <p v-if="pub.description">{{ pub.description }}</p>
     
     <!-- Image Gallery -->

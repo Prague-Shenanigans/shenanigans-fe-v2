@@ -1,31 +1,29 @@
-// ===================== Base =====================
-$color-cream:          #fff7e2;
-$color-burnt-orange:   #d85a28;
-
-// ===================== Neutrals =====================
-$color-warm-beige:     #f1d8b2;
-$color-soft-sand:      #e6c79c;
-$color-warm-taupe:     #b08b72;
-$color-charcoal-brown: #4a3b34;
-
-// ===================== Accents =====================
-$color-olive-green:    #6b7c2a;
-$color-muted-sage:     #a6b18c;
-$color-deep-burgundy:  #7b2d26;
-$color-warm-gold:      #e2a03f;
-
-// ===================== Cool Contrast =====================
-$color-muted-teal:     #3f7a89;
-$color-slate-blue:     #4e6578;
-
-// ===================== Additional Colors =====================
-$color-mystic-purple:   #6b4e71;
-$color-dark-slate:      #2c3e50;
-$color-warning-red:     #e74c3c;
-
 // ===================== Typography =====================
 // Global heading styles for category components
+//
+// USAGE:
+// 1. For basic headings: Just use h1, h2, h3, h4 - they will have default styling
+// 2. For category-specific colors: Add the appropriate utility class:
+//    - .heading-event (orange)
+//    - .heading-restaurant (green)
+//    - .heading-pub (gold)
+//    - .heading-bar (burgundy)
+//    - .heading-landmark (gold)
+//    - .heading-view (teal)
+//    - .heading-legend-myth (burgundy)
+//    - .heading-underground (sage)
+//    - .heading-scammer (slate blue)
+//
+// Example:
+// <h3 class="heading-event">Event Title</h3>
+// <h4 class="heading-restaurant">Restaurant Name</h4>
+//
+// 3. For container-based styling: Wrap content in .category-heading.{category}
+//    Example: <div class="category-heading event">...</div>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+// Import color variables
+@import './quasar.variables.scss';
 
 // Base heading styles
 h1, h2, h3, h4 {
@@ -98,3 +96,40 @@ h4 {
     color: $color-slate-blue;
   }
 }
+
+// Utility classes for category-specific headings
+.heading-event {
+  color: $color-burnt-orange !important;
+}
+
+.heading-restaurant {
+  color: $color-olive-green !important;
+}
+
+.heading-pub {
+  color: $color-warm-gold !important;
+}
+
+.heading-bar {
+  color: $color-deep-burgundy !important;
+}
+
+.heading-landmark {
+  color: $color-warm-gold !important;
+}
+
+.heading-view {
+  color: $color-muted-teal !important;
+}
+
+.heading-legend-myth {
+  color: $color-deep-burgundy !important;
+}
+
+.heading-underground {
+  color: $color-muted-sage !important;
+}
+
+.heading-scammer {
+  color: $color-slate-blue !important;
+} 

@@ -1,7 +1,7 @@
 <template>
   <div class="restaurant-card">
     <div class="restaurant-header">
-      <h3 class="restaurant-title">{{ restaurant.name }}</h3>
+      <h3 class="restaurant-title heading-restaurant">{{ restaurant.name }}</h3>
       <div class="restaurant-cuisine-type" v-if="restaurant.cuisine_type"><span class="restaurant-detail-label">Cuisine:</span> {{ restaurant.cuisine_type }}</div>
       <div class="restaurant-details-row">
         <span class="restaurant-detail-label">Price:</span>

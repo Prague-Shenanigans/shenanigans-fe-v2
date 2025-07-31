@@ -2,7 +2,7 @@
   <div class="event-card">
     <div class="event-header">
       <div class="event-title-row">
-        <h3 class="event-title">{{ event.name }}</h3>
+        <h3 class="event-title heading-event">{{ event.name }}</h3>
         <span class="event-type-tag">{{ event.event_type }}</span>
       </div>
       <div class="event-venue dark-data"><span class="event-detail-label">Venue:</span> {{ event.venue }}</div>
