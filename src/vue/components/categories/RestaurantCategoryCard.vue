@@ -46,18 +46,15 @@
         <a :href="restaurant.website" target="_blank" rel="noopener" class="restaurant-link">{{ restaurant.website }}</a>
       </div>
     </div>
-    <div class="restaurant-description" v-if="restaurant.description">
-      <div class="dark-data"><MarkdownRenderer :content="restaurant.description" /></div>
+    <div v-if="restaurant?.markdown_content" class="restaurant-description">
+      <div class="dark-data"><MarkdownRenderer :content="restaurant.markdown_content" /></div>
     </div>
     
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="restaurant.pictures" 
-      :title="restaurant.name"
+      :images="restaurant?.pictures" 
+      :title="restaurant?.name || 'Untitled'"
     />
-    <div v-if="restaurant.markdown_content" class="scammer-description">
-      <MarkdownRenderer :content="restaurant.markdown_content" />
-    </div>
   </div>
 </template>
 

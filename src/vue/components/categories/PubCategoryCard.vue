@@ -1,13 +1,13 @@
 <template>
   <div class="category-card pub-card">
-    <h4 class="heading-pub">{{ pub.title || pub.name }}</h4>
+    <h4 class="heading-pub">{{ pub?.name || 'Untitled' }}</h4>
     
     <!-- Image Gallery -->
-    <ImageGallery 
-    :images="pub.pictures" 
-    :title="pub.title || pub.name"
+        <ImageGallery 
+      :images="pub?.pictures" 
+      :title="pub?.name || 'Untitled'"
     />
-    <div v-if="pub.markdown_content" class="pub-description">
+    <div v-if="pub?.markdown_content" class="pub-description">
       <MarkdownRenderer :content="pub.markdown_content" />
     </div>
     

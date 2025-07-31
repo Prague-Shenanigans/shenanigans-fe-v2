@@ -1,13 +1,13 @@
 <template>
   <div class="category-card underground-card">
-    <h4 class="heading-underground">{{ underground.title || underground.name }}</h4>
+    <h4 class="heading-underground">{{ underground?.name || 'Untitled' }}</h4>
     
     <!-- Image Gallery -->
-    <ImageGallery 
-    :images="underground.pictures" 
-    :title="underground.title || underground.name"
+        <ImageGallery 
+      :images="underground?.pictures" 
+      :title="underground?.name || 'Untitled'"
     />
-    <div v-if="underground.markdown_content" class="underground-description">
+    <div v-if="underground?.markdown_content" class="underground-description">
       <MarkdownRenderer :content="underground.markdown_content" />
     </div>
     

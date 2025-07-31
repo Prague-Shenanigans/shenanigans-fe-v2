@@ -1,12 +1,12 @@
 <template>
   <div class="category-card landmark-card">
-    <h4 class="heading-landmark">{{ landmark.title || landmark.name }}</h4>
+    <h4 class="heading-landmark">{{ landmark?.name || 'Untitled' }}</h4>
     <!-- Image Gallery -->
     <ImageGallery 
-    :images="landmark.pictures" 
-    :title="landmark.title || landmark.name"
+    :images="landmark?.pictures" 
+    :title="landmark?.name || 'Untitled'"
     />
-    <div v-if="landmark.markdown_content" class="landmark-description">
+    <div v-if="landmark?.markdown_content" class="landmark-description">
       <MarkdownRenderer :content="landmark.markdown_content" />
     </div>
     

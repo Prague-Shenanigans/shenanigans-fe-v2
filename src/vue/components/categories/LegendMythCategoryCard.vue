@@ -1,13 +1,13 @@
 <template>
   <div class="category-card legend-myth-card">
-    <h4 class="heading-legend-myth">{{ legendMyth.title || legendMyth.name }}</h4>
+    <h4 class="heading-legend-myth">{{ legendMyth?.name || 'Untitled' }}</h4>
     
     <!-- Image Gallery -->
     <ImageGallery 
-    :images="legendMyth.pictures" 
-    :title="legendMyth.title || legendMyth.name"
+    :images="legendMyth?.pictures" 
+    :title="legendMyth?.name || 'Untitled'"
     />
-    <div v-if="legendMyth.markdown_content" class="legend-description">
+    <div v-if="legendMyth?.markdown_content" class="legend-description">
       <MarkdownRenderer :content="legendMyth.markdown_content" />
     </div>
     

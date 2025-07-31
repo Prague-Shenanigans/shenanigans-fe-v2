@@ -49,18 +49,15 @@
         <a :href="event.website" target="_blank" rel="noopener" class="event-link">{{ event.website }}</a>
       </div>
     </div>
-    <div class="event-description" v-if="event.description">
-      <MarkdownRenderer :content="event.description" />
+    <div v-if="event?.markdown_content" class="event-description">
+      <MarkdownRenderer :content="event.markdown_content" />
     </div>
     
     <!-- Image Gallery -->
     <ImageGallery 
-      :images="event.pictures" 
-      :title="event.name"
+      :images="event?.pictures" 
+      :title="event?.name || 'Untitled'"
     />
-    <div v-if="event.markdown_content" class="scammer-description">
-      <MarkdownRenderer :content="event.markdown_content" />
-    </div>
   </div>
 </template>
 

@@ -1,13 +1,13 @@
 <template>
   <div class="category-card scammer-card">
-    <h4 class="heading-scammer">{{ scammer.title || scammer.name }}</h4>
+    <h4 class="heading-scammer">{{ scammer?.name || 'Untitled' }}</h4>
     
     <!-- Image Gallery -->
-    <ImageGallery 
-    :images="scammer.pictures" 
-    :title="scammer.title || scammer.name"
+        <ImageGallery 
+      :images="scammer?.pictures" 
+      :title="scammer?.name || 'Untitled'"
     />
-    <div v-if="scammer.markdown_content" class="scammer-description">
+    <div v-if="scammer?.markdown_content" class="scammer-description">
       <MarkdownRenderer :content="scammer.markdown_content" />
     </div>
     

@@ -10,7 +10,7 @@
           class="poi-header-image"
         />
         <p>{{ props.selectedPoi.description }}</p>
-        <div v-if="props.selectedPoi.markdown_content" class="poi-markdown">
+        <div v-if="props.selectedPoi?.markdown_content" class="poi-markdown">
           <MarkdownRenderer :content="props.selectedPoi.markdown_content" />
         </div>
       </div>
@@ -227,7 +227,7 @@
           />
           <LegendMythCategoryCard
             v-if="selectedCategory === 'legends_myths'"
-            :legend="getCategoryItems('legends_myths')[0]"
+            :legendMyth="getCategoryItems('legends_myths')[0]"
             :key="getCategoryItems('legends_myths')[0].id"
           />
           <UndergroundCategoryCard

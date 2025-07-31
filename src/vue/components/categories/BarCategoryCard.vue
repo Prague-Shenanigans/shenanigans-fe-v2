@@ -1,13 +1,13 @@
 <template>
   <div class="category-card bar-card">
-    <h4 class="heading-bar">{{ bar.title || bar.name }}</h4>
+    <h4 class="heading-bar">{{ bar?.name || 'Untitled' }}</h4>
     
     <!-- Image Gallery -->
-    <ImageGallery 
-    :images="bar.pictures" 
-    :title="bar.title || bar.name"
+        <ImageGallery 
+      :images="bar?.pictures" 
+      :title="bar?.name || 'Untitled'"
     />
-    <div v-if="bar.markdown_content" class="bar-description">
+    <div v-if="bar?.markdown_content" class="bar-description">
       <MarkdownRenderer :content="bar.markdown_content" />
     </div>
     
