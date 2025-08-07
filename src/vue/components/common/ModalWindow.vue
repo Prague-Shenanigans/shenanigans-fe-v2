@@ -1,17 +1,17 @@
 <template>
-  <Transition name="modal">
-    <div v-if="isOpen" class="modal-overlay" @click="closeModal">
-      <div class="modal-container" @click.stop>
+  <Transition name="modal-window">
+    <div v-if="isOpen" class="modal-window-overlay" @click="closeModal">
+      <div class="modal-window-container" @click.stop>
         <!-- Header -->
-        <div class="modal-header">
-          <h3 v-if="title" class="modal-title">{{ title }}</h3>
-          <button class="close-btn" @click="closeModal">
-            <span class="close-icon">×</span>
+        <div class="modal-window-header">
+          <h3 v-if="title" class="modal-window-title">{{ title }}</h3>
+          <button class="modal-window-close-btn" @click="closeModal">
+            <span class="modal-window-close-icon">×</span>
           </button>
         </div>
 
         <!-- Content -->
-        <div class="modal-content">
+        <div class="modal-window-content">
           <slot />
         </div>
       </div>
@@ -43,7 +43,7 @@ const { isOpen, title } = props;
 
 <style scoped lang="scss">
 // Transparent overlay covering entire screen
-.modal-overlay {
+.modal-window-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -58,7 +58,7 @@ const { isOpen, title } = props;
 }
 
 // Modal container - won't close when clicked
-.modal-container {
+.modal-window-container {
   background: #fceac9;
   border: 3px solid #E2592A;
   border-radius: 12px;
@@ -68,10 +68,10 @@ const { isOpen, title } = props;
   
   // Desktop: 80vw x 80vh
   @media (min-width: 1024px) {
-    width: 80vw;
-    height: 80vh;
-    max-width: 80vw;
-    max-height: 80vh;
+    width: 90vw;
+    height: 90vh;
+    max-width: 90vw;
+    max-height: 90vh;
   }
   
   // Mobile/Tablet: 100vw x 100vh
@@ -84,7 +84,7 @@ const { isOpen, title } = props;
   }
 }
 
-.modal-header {
+.modal-window-header {
   background: linear-gradient(135deg, #E2592A 0%, #d44a1f 100%);
   border-bottom: 3px solid #E2592A;
   padding: 1.5rem 2rem;
@@ -92,7 +92,7 @@ const { isOpen, title } = props;
   justify-content: space-between;
   align-items: center;
   
-  .modal-title {
+  .modal-window-title {
     margin: 0;
     font-size: 1.8rem;
     font-weight: 700;
@@ -102,7 +102,7 @@ const { isOpen, title } = props;
     letter-spacing: 1px;
   }
   
-  .close-btn {
+  .modal-window-close-btn {
     background: none;
     border: none;
     color: #fceac9;
@@ -123,13 +123,13 @@ const { isOpen, title } = props;
     }
   }
   
-  .close-icon {
+  .modal-window-close-icon {
     line-height: 1;
     font-weight: 300;
   }
 }
 
-.modal-content {
+.modal-window-content {
   padding: 2rem;
   background: #fceac9;
   overflow-y: auto;
@@ -141,16 +141,16 @@ const { isOpen, title } = props;
 }
 
 // Custom scrollbar for modal content
-.modal-content::-webkit-scrollbar {
+.modal-window-content::-webkit-scrollbar {
   width: 8px;
 }
 
-.modal-content::-webkit-scrollbar-track {
+.modal-window-content::-webkit-scrollbar-track {
   background: rgba(226, 89, 42, 0.1);
   border-radius: 4px;
 }
 
-.modal-content::-webkit-scrollbar-thumb {
+.modal-window-content::-webkit-scrollbar-thumb {
   background: #E2592A;
   border-radius: 4px;
   
@@ -160,17 +160,17 @@ const { isOpen, title } = props;
 }
 
 // Modal animations
-.modal-enter-active,
-.modal-leave-active {
+.modal-window-enter-active,
+.modal-window-leave-active {
   transition: all 0.3s ease;
 }
 
-.modal-enter-from {
+.modal-window-enter-from {
   opacity: 0;
   transform: scale(0.9);
 }
 
-.modal-leave-to {
+.modal-window-leave-to {
   opacity: 0;
   transform: scale(0.9);
 }

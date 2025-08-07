@@ -79,16 +79,16 @@
       <div class="modal-container" @click.stop>
         <!-- Header -->
         <div class="modal-header">
-          <h3 class="modal-title">{{ modalTitle }}</h3>
           <button class="close-btn" @click="closeFilterModal">
             <span class="close-icon">×</span>
           </button>
+          <FilterModeSwitch />
         </div>
 
-                  <!-- Content -->
-          <div class="modal-content">
-            <FilterModal />
-          </div>
+        <!-- Content -->
+        <div class="modal-content">
+          <FilterModal />
+        </div>
       </div>
     </div>
   </div>
@@ -98,6 +98,7 @@
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { useModesStore } from '../stores/modes.store';
 import FilterModal from '../vue/components/filters/FilterModal.vue';
+import FilterModeSwitch from '../vue/components/filters/FilterModeSwitch.vue';
 
 const menuOpen = ref(false);
 const activeNav = ref('explore');
@@ -116,11 +117,6 @@ const filterButtonText = computed(() => {
     'favourites': 'Filter Favourites'
   };
   return modeMap[modesStore.selectedMode] || 'Filter';
-});
-
-// Computed property for modal title
-const modalTitle = computed(() => {
-  return 'Filters & Preferences';
 });
 
 function toggleFilter() {
@@ -425,10 +421,10 @@ onBeforeUnmount(() => {
   
   /* Desktop: 80vw x 80vh */
   @media (min-width: 1024px) {
-    width: 80vw;
-    height: 80vh;
-    max-width: 80vw;
-    max-height: 80vh;
+    width: 90vw;
+    height: 90vh;
+    max-width: 90vw;
+    max-height: 90vh;
   }
   
   /* Mobile/Tablet: 100vw x 100vh */
@@ -446,20 +442,14 @@ onBeforeUnmount(() => {
   border-bottom: 3px solid #E2592A;
   padding: 1.5rem 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  
-  .modal-title {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #fceac9;
-    font-family: 'Amatic SC', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
+  position: relative;
   
   .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
     background: none;
     border: none;
     color: #fceac9;
@@ -473,6 +463,7 @@ onBeforeUnmount(() => {
     justify-content: center;
     border-radius: 50%;
     transition: all 0.2s ease;
+    z-index: 10;
     
     &:hover {
       background: rgba(252, 234, 201, 0.2);
@@ -487,10 +478,9 @@ onBeforeUnmount(() => {
 }
 
 .modal-content {
-  padding: 2rem;
   background: #fceac9;
   overflow-y: auto;
-  height: calc(100% - 80px);
+  height: calc(100% - 120px);
   
   @media (max-width: 1023px) {
     padding: 1.5rem;

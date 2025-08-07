@@ -1,82 +1,67 @@
 <template>
   <div class="filter-container">
-    <h2 class="filter-title">Filter Places</h2>
-    
-    <!-- Category Filters -->
-    <div class="filter-section">
+    <!-- Categories Section -->
+    <div class="filter-section categories-section">
       <h3 class="section-title">Categories</h3>
-      <div class="filter-grid">
-        <label v-for="category in categories" :key="category.key" class="filter-checkbox">
-          <input 
-            type="checkbox" 
-            :value="category.key"
-            v-model="selectedCategories"
-            @change="applyFilters"
-          />
-          <span class="checkbox-label">{{ category.label }}</span>
-        </label>
+      <div class="categories-grid">
+        <button
+          v-for="category in categories"
+          :key="category.key"
+          class="category-btn"
+          :class="{ 'active': selectedCategories.includes(category.key) }"
+          @click="toggleCategory(category.key)"
+        >
+          {{ category.label }}
+        </button>
       </div>
     </div>
 
-    <!-- Price Range Filter -->
-    <div class="filter-section">
-      <h3 class="section-title">Price Range</h3>
-      <div class="price-filters">
-        <label v-for="price in priceRanges" :key="price.value" class="filter-checkbox">
-          <input 
-            type="checkbox" 
-            :value="price.value"
-            v-model="selectedPriceRanges"
-            @change="applyFilters"
-          />
-          <span class="checkbox-label">{{ price.label }}</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Distance Filter -->
-    <div class="filter-section">
-      <h3 class="section-title">Distance</h3>
-      <div class="distance-slider">
-        <input 
-          type="range" 
-          min="0" 
-          max="10" 
-          v-model="distance"
-          class="slider"
-          @input="applyFilters"
-        />
-        <div class="slider-labels">
-          <span>Near</span>
-          <span>{{ distance }}km</span>
-          <span>Far</span>
+    <!-- Distance & Price Section -->
+    <div class="filter-section controls-section">
+      <div class="controls-grid">
+        <!-- Distance -->
+        <div class="control-group">
+          <h3 class="section-title">Distance: {{ distance }}km</h3>
+          <div class="distance-control">
+            <input 
+              type="range" 
+              min="0" 
+              max="10" 
+              v-model="distance"
+              class="distance-slider"
+              @input="applyFilters"
+            />
+            <div class="distance-labels">
+              <span>Near</span>
+              <span>Far</span>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Rating Filter -->
-    <div class="filter-section">
-      <h3 class="section-title">Minimum Rating</h3>
-      <div class="rating-filters">
-        <label v-for="rating in ratings" :key="rating.value" class="filter-checkbox">
-          <input 
-            type="radio" 
-            :value="rating.value"
-            v-model="selectedRating"
-            name="rating"
-            @change="applyFilters"
-          />
-          <span class="checkbox-label">{{ rating.label }}</span>
-        </label>
+        <!-- Price Range -->
+        <div class="control-group">
+          <h3 class="section-title">Price Range</h3>
+          <div class="price-buttons">
+            <button
+              v-for="price in priceRanges"
+              :key="price.value"
+              class="price-btn"
+              :class="{ 'active': selectedPriceRanges.includes(price.value) }"
+              @click="togglePrice(price.value)"
+            >
+              {{ price.label }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Action Buttons -->
     <div class="filter-actions">
-      <button class="btn btn-secondary" @click="clearFilters">
+      <button class="action-btn clear-btn" @click="clearFilters">
         Clear All
       </button>
-      <button class="btn btn-primary" @click="applyFilters">
+      <button class="action-btn apply-btn" @click="applyFilters">
         Apply Filters
       </button>
     </div>
@@ -92,7 +77,6 @@ const emit = defineEmits(['filter-change']);
 const selectedCategories = ref([]);
 const selectedPriceRanges = ref([]);
 const distance = ref(5);
-const selectedRating = ref(0);
 
 // Filter options
 const categories = [
@@ -114,19 +98,31 @@ const priceRanges = [
   { value: '$$$$', label: 'Luxury ($$$$)' }
 ];
 
-const ratings = [
-  { value: 0, label: 'Any Rating' },
-  { value: 3, label: '3+ Stars' },
-  { value: 4, label: '4+ Stars' },
-  { value: 5, label: '5 Stars' }
-];
+function toggleCategory(categoryKey) {
+  const index = selectedCategories.value.indexOf(categoryKey);
+  if (index > -1) {
+    selectedCategories.value.splice(index, 1);
+  } else {
+    selectedCategories.value.push(categoryKey);
+  }
+  applyFilters();
+}
+
+function togglePrice(priceValue) {
+  const index = selectedPriceRanges.value.indexOf(priceValue);
+  if (index > -1) {
+    selectedPriceRanges.value.splice(index, 1);
+  } else {
+    selectedPriceRanges.value.push(priceValue);
+  }
+  applyFilters();
+}
 
 function applyFilters() {
   const filters = {
     categories: selectedCategories.value,
     priceRanges: selectedPriceRanges.value,
-    distance: distance.value,
-    rating: selectedRating.value
+    distance: distance.value
   };
   
   emit('filter-change', filters);
@@ -136,90 +132,152 @@ function clearFilters() {
   selectedCategories.value = [];
   selectedPriceRanges.value = [];
   distance.value = 5;
-  selectedRating.value = 0;
   applyFilters();
 }
 </script>
 
 <style scoped lang="scss">
-.filter-container {
-  max-width: 600px;
-  margin: 0 auto;
-}
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap');
 
-.filter-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+.filter-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
 }
 
 .filter-section {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
   background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
 }
 
 .section-title {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
   color: #333;
   margin-bottom: 1rem;
+  font-family: 'Amatic SC', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.control-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.8rem;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 }
 
-.filter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.8rem;
+// Categories Section
+.categories-section {
+  flex: 1;
+  min-height: 0;
 }
 
-.filter-checkbox {
+.categories-grid {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+.category-btn {
+  padding: 0.8rem 1rem;
+  border: 2px solid #E2592A;
+  background: #fceac9;
+  color: #E2592A;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex: 0 0 auto;
+  min-width: 140px;
   
   &:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: #E2592A;
+    color: #fceac9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(226, 89, 42, 0.3);
   }
   
-  input[type="checkbox"],
-  input[type="radio"] {
-    width: 18px;
-    height: 18px;
-    accent-color: #2e9000;
+  &.active {
+    background: #E2592A;
+    color: #fceac9;
+    box-shadow: 0 4px 12px rgba(226, 89, 42, 0.4);
   }
 }
 
-.checkbox-label {
-  font-size: 0.95rem;
-  color: #555;
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+// Controls Section
+.controls-section {
+  flex: 0 0 auto;
 }
 
-.price-filters,
-.rating-filters {
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.distance-control {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
 }
 
-.distance-slider {
-  padding: 1rem 0;
+.price-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
 }
 
-.slider {
+.price-btn {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #2e9000;
+  background: #fceac9;
+  color: #2e9000;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  min-width: 100px;
+  flex: 0 0 auto;
+  
+  &:hover {
+    background: #2e9000;
+    color: #fceac9;
+    transform: translateY(-1px);
+  }
+  
+  &.active {
+    background: #2e9000;
+    color: #fceac9;
+    box-shadow: 0 2px 8px rgba(46, 144, 0, 0.3);
+  }
+}
+
+.distance-slider {
   width: 100%;
-  height: 6px;
-  border-radius: 3px;
+  height: 8px;
+  border-radius: 4px;
   background: #ddd;
   outline: none;
   -webkit-appearance: none;
@@ -227,83 +285,124 @@ function clearFilters() {
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: #2e9000;
     cursor: pointer;
+    border: 3px solid #fceac9;
+    box-shadow: 0 2px 8px rgba(46, 144, 0, 0.3);
   }
   
   &::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: #2e9000;
     cursor: pointer;
-    border: none;
+    border: 3px solid #fceac9;
+    box-shadow: 0 2px 8px rgba(46, 144, 0, 0.3);
   }
 }
 
-.slider-labels {
+.distance-labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #666;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 }
 
+// Action Buttons
 .filter-actions {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e9ecef;
+  padding-top: 1rem;
 }
 
-.btn {
+.action-btn {
   padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 6px;
+  border: 2px solid;
+  border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 120px;
   
-  &.btn-primary {
-    background: #2e9000;
-    color: white;
-    
-    &:hover {
-      background: #237000;
-      transform: translateY(-1px);
-    }
+  &:hover {
+    transform: translateY(-2px);
   }
+}
+
+.clear-btn {
+  background: #6c757d;
+  color: white;
+  border-color: #6c757d;
   
-  &.btn-secondary {
-    background: #6c757d;
-    color: white;
-    
-    &:hover {
-      background: #5a6268;
-      transform: translateY(-1px);
-    }
+  &:hover {
+    background: #5a6268;
+    border-color: #5a6268;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+  }
+}
+
+.apply-btn {
+  background: #2e9000;
+  color: white;
+  border-color: #2e9000;
+  
+  &:hover {
+    background: #237000;
+    border-color: #237000;
+    box-shadow: 0 4px 12px rgba(46, 144, 0, 0.3);
   }
 }
 
 // Responsive design
 @media (max-width: 768px) {
-  .filter-grid {
+  .filter-container {
+    padding: 0.8rem;
+    gap: 1rem;
+  }
+  
+  .categories-grid {
+    gap: 0.6rem;
+    justify-content: center;
+  }
+  
+  .category-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    min-width: 120px;
+  }
+  
+  .controls-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .price-buttons {
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  
+  .price-btn {
+    width: 100%;
+    max-width: 200px;
   }
   
   .filter-actions {
     flex-direction: column;
   }
   
-  .btn {
+  .action-btn {
     width: 100%;
   }
 }
-</style> 
+</style>

@@ -1,10 +1,9 @@
 <template>
   <div class="filter-modal-container">
     <!-- Mode Switch -->
-    <FilterModeSwitch />
     
     <!-- Dynamic Filter Component -->
-    <div class="filter-content">
+    <div class="modal-content">
       <component 
         :is="currentFilterComponent" 
         @filter-change="handleFilterChange"
@@ -16,7 +15,6 @@
 <script setup>
 import { computed } from 'vue';
 import { useModesStore } from '../../../stores/modes.store';
-import FilterModeSwitch from './FilterModeSwitch.vue';
 import FreeBrowsingFilter from './FreeBrowsingFilter.vue';
 import CreateTourFilter from './CreateTourFilter.vue';
 import GuideFilter from './GuideFilter.vue';
