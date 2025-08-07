@@ -16,28 +16,9 @@
       </div>
     </div>
 
-    <!-- Distance & Price Section -->
+    <!-- Price Range Section -->
     <div class="filter-section controls-section">
       <div class="controls-grid">
-        <!-- Distance -->
-        <div class="control-group">
-          <h3 class="section-title">Distance: {{ distance }}km</h3>
-          <div class="distance-control">
-            <input 
-              type="range" 
-              min="0" 
-              max="10" 
-              v-model="distance"
-              class="distance-slider"
-              @input="applyFilters"
-            />
-            <div class="distance-labels">
-              <span>Near</span>
-              <span>Far</span>
-            </div>
-          </div>
-        </div>
-
         <!-- Price Range -->
         <div class="control-group">
           <h3 class="section-title">Price Range</h3>
@@ -76,7 +57,6 @@ const emit = defineEmits(['filter-change']);
 // Filter state
 const selectedCategories = ref([]);
 const selectedPriceRanges = ref([]);
-const distance = ref(5);
 
 // Filter options
 const categories = [
@@ -121,8 +101,7 @@ function togglePrice(priceValue) {
 function applyFilters() {
   const filters = {
     categories: selectedCategories.value,
-    priceRanges: selectedPriceRanges.value,
-    distance: distance.value
+    priceRanges: selectedPriceRanges.value
   };
   
   emit('filter-change', filters);
@@ -131,7 +110,6 @@ function applyFilters() {
 function clearFilters() {
   selectedCategories.value = [];
   selectedPriceRanges.value = [];
-  distance.value = 5;
   applyFilters();
 }
 </script>
@@ -223,9 +201,8 @@ function clearFilters() {
 }
 
 .controls-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  display: flex;
+  justify-content: center;
 }
 
 .control-group {
@@ -233,11 +210,7 @@ function clearFilters() {
   flex-direction: column;
 }
 
-.distance-control {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
+
 
 .price-buttons {
   display: flex;
@@ -274,44 +247,7 @@ function clearFilters() {
   }
 }
 
-.distance-slider {
-  width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  background: #ddd;
-  outline: none;
-  -webkit-appearance: none;
-  
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #2e9000;
-    cursor: pointer;
-    border: 3px solid #fceac9;
-    box-shadow: 0 2px 8px rgba(46, 144, 0, 0.3);
-  }
-  
-  &::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #2e9000;
-    cursor: pointer;
-    border: 3px solid #fceac9;
-    box-shadow: 0 2px 8px rgba(46, 144, 0, 0.3);
-  }
-}
 
-.distance-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: #666;
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-}
 
 // Action Buttons
 .filter-actions {
@@ -382,8 +318,8 @@ function clearFilters() {
   }
   
   .controls-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
   }
   
   .price-buttons {
