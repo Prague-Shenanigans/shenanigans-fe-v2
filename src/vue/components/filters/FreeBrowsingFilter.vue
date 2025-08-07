@@ -11,7 +11,8 @@
           :class="{ 'active': selectedCategories.includes(category.key) }"
           @click="toggleCategory(category.key)"
         >
-          {{ category.label }}
+          <q-icon :name="category.icon" class="category-icon" />
+          <span class="category-label">{{ category.label }}</span>
         </button>
       </div>
     </div>
@@ -51,6 +52,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { QIcon } from 'quasar';
 
 const emit = defineEmits(['filter-change']);
 
@@ -60,15 +62,15 @@ const selectedPriceRanges = ref([]);
 
 // Filter options
 const categories = [
-  { key: 'restaurants', label: 'Restaurants' },
-  { key: 'pubs', label: 'Pubs' },
-  { key: 'bars', label: 'Bars' },
-  { key: 'landmarks', label: 'Landmarks' },
-  { key: 'views', label: 'Views' },
-  { key: 'events', label: 'Events' },
-  { key: 'legends_myths', label: 'Legends & Myths' },
-  { key: 'underground', label: 'Underground' },
-  { key: 'scammers', label: 'Scammers' }
+  { key: 'restaurants', label: 'Restaurants', icon: 'restaurant' },
+  { key: 'pubs', label: 'Pubs', icon: 'sports_bar' },
+  { key: 'bars', label: 'Bars', icon: 'local_bar' },
+  { key: 'landmarks', label: 'Landmarks', icon: 'place' },
+  { key: 'views', label: 'Views', icon: 'visibility' },
+  { key: 'events', label: 'Events', icon: 'event' },
+  { key: 'legends_myths', label: 'Legends & Myths', icon: 'auto_stories' },
+  { key: 'underground', label: 'Underground', icon: 'explore_off' },
+  { key: 'scammers', label: 'Scammers', icon: 'warning' }
 ];
 
 const priceRanges = [
@@ -180,6 +182,9 @@ function clearFilters() {
   letter-spacing: 0.5px;
   flex: 0 0 auto;
   min-width: 140px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   
   &:hover {
     background: #E2592A;
@@ -192,6 +197,15 @@ function clearFilters() {
     background: #E2592A;
     color: #fceac9;
     box-shadow: 0 4px 12px rgba(226, 89, 42, 0.4);
+  }
+  
+  .category-icon {
+    font-size: 1.2rem;
+  }
+  
+  .category-label {
+    flex: 1;
+    text-align: center;
   }
 }
 
